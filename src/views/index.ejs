@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lançamento de Frequência Diária - SCFV</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+      overflow: hidden;
+    }
+
+    /* ── Cabeçalho ── */
+    .header {
+      background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
+      color: #fff;
+      padding: 28px 32px;
+    }
+    .header h1 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .header p {
+      margin-top: 4px;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+
+    /* ── Navegação rápida ── */
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      padding: 16px 32px;
+      background: #E3F2FD;
+      border-bottom: 1px solid #BBDEFB;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: #1565C0;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #0D47A1; text-decoration: underline; }
+
+    /* ── Corpo do formulário ── */
+    .form-body {
+      padding: 28px 32px;
+    }
+
+    .date-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .date-row label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #444;
+    }
+    .date-row input[type="date"] {
+      border: 1.5px solid #90CAF9;
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-size: 0.95rem;
+      color: #333;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .date-row input[type="date"]:focus { border-color: #1565C0; }
+
+    /* ── Tabela ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    thead tr {
+      background: #1565C0;
+      color: #fff;
+    }
+    thead th {
+      padding: 13px 18px;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    tbody tr {
+      border-bottom: 1px solid #E0E0E0;
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #F3F8FF; }
+    tbody td { padding: 13px 18px; vertical-align: middle; }
+
+    /* ── Radios ── */
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #444;
+    }
+    .radio-group input[type="radio"] { accent-color: #1565C0; width: 16px; height: 16px; cursor: pointer; }
+
+    /* ── Mensagem vazia ── */
+    .empty-msg {
+      text-align: center;
+      padding: 40px 20px;
+      color: #888;
+      font-size: 0.95rem;
+    }
+    .empty-msg a { color: #1565C0; font-weight: 600; text-decoration: none; }
+    .empty-msg a:hover { text-decoration: underline; }
+
+    /* ── Botão salvar ── */
+    .footer-actions {
+      padding: 20px 32px 28px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-save {
+      background: #2E7D32;
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 7px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-save:hover { background: #1B5E20; transform: translateY(-1px); }
+    .btn-save:active { transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <h1>📋 Lançamento de Frequência Diária</h1>
+      <p>Serviço de Convivência e Fortalecimento de Vínculos — SCFV Taquarituba</p>
+    </div>
+
+    <div class="nav-links">
+      <a href="/relatorio">📊 Consultar Histórico de Presenças</a>
+      <a href="/cadastro">➕ Cadastrar Nova Criança</a>
+    </div>
+
+    <form action="/registrar" method="POST">
+      <div class="form-body">
+
+        <div class="date-row">
+          <label for="data">Data da Chamada:</label>
+          <input type="date" id="data" name="data" value="<%= dataHoje %>" required />
+        </div>
+
+        <% if (criancas.length === 0) { %>
+          <div class="empty-msg">
+            Nenhuma criança cadastrada ainda.<br />
+            <a href="/cadastro">Clique aqui para cadastrar a primeira criança.</a>
+          </div>
+        <% } else { %>
+          <table>
+            <thead>
+              <tr>
+                <th>Nome da Criança</th>
+                <th>Presença</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% criancas.forEach(function(crianca) { %>
+                <tr>
+                  <td><%= crianca.nome %></td>
+                  <td>
+                    <div class="radio-group">
+                      <label>
+                        <input
+                          type="radio"
+                          name="presencas[<%= crianca.id %>]"
+                          value="Presente"
+                          checked
+                        />
+                        Presente
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name="presencas[<%= crianca.id %>]"
+                          value="Ausente"
+                        />
+                        Ausente
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } %>
+
+      </div>
+
+      <% if (criancas.length > 0) { %>
+        <div class="footer-actions">
+          <button type="submit" class="btn-save">💾 Salvar Frequência</button>
+        </div>
+      <% } %>
+    </form>
+
+  </div>
+</body>
+</html>

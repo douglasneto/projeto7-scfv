@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relatório de Frequências - SCFV</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+      overflow: hidden;
+    }
+
+    /* ── Cabeçalho ── */
+    .header {
+      background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
+      color: #fff;
+      padding: 28px 32px;
+    }
+    .header h1 { font-size: 1.55rem; font-weight: 700; letter-spacing: 0.3px; }
+    .header p  { font-size: 0.9rem; margin-top: 4px; opacity: 0.85; }
+
+    /* ── Navegação ── */
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      padding: 16px 32px;
+      background: #E3F2FD;
+      border-bottom: 1px solid #BBDEFB;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: #1565C0;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #0D47A1; text-decoration: underline; }
+
+    /* ── Resumo ── */
+    .summary {
+      display: flex;
+      gap: 16px;
+      padding: 20px 32px;
+      flex-wrap: wrap;
+    }
+    .summary-card {
+      background: #F5F5F5;
+      border-radius: 8px;
+      padding: 14px 20px;
+      min-width: 140px;
+      text-align: center;
+      flex: 1;
+    }
+    .summary-card .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1565C0;
+    }
+    .summary-card .label { font-size: 0.8rem; color: #777; margin-top: 2px; }
+    .summary-card.present .value { color: #2E7D32; }
+    .summary-card.absent  .value { color: #C62828; }
+
+    /* ── Tabela ── */
+    .table-wrapper { padding: 0 32px 32px; overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    thead tr {
+      background: #1565C0;
+      color: #fff;
+    }
+    thead th {
+      padding: 13px 16px;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    tbody tr {
+      border-bottom: 1px solid #E0E0E0;
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #F3F8FF; }
+    tbody td { padding: 12px 16px; vertical-align: middle; }
+
+    /* ── Badge de status ── */
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .badge.presente {
+      background: #E8F5E9;
+      color: #2E7D32;
+      border: 1px solid #A5D6A7;
+    }
+    .badge.ausente {
+      background: #FFEBEE;
+      color: #C62828;
+      border: 1px solid #EF9A9A;
+    }
+
+    /* ── Botão excluir ── */
+    .btn-delete {
+      background: transparent;
+      border: 1.5px solid #EF9A9A;
+      color: #C62828;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    .btn-delete:hover {
+      background: #FFEBEE;
+      border-color: #C62828;
+    }
+
+    /* ── Mensagem vazia ── */
+    .empty-msg {
+      text-align: center;
+      padding: 50px 20px;
+      color: #888;
+      font-size: 0.95rem;
+    }
+    .empty-msg a { color: #1565C0; font-weight: 600; text-decoration: none; }
+    .empty-msg a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <h1>📊 Relatório de Frequências</h1>
+      <p>Histórico completo de presenças e ausências registradas — SCFV Taquarituba</p>
+    </div>
+
+    <div class="nav-links">
+      <a href="/">📋 Voltar para Chamada Diária</a>
+      <a href="/cadastro">➕ Cadastrar Nova Criança</a>
+    </div>
+
+    <%
+      const total    = registros.length;
+      const presentes = registros.filter(function(r){ return r.status === 'Presente'; }).length;
+      const ausentes  = registros.filter(function(r){ return r.status === 'Ausente';  }).length;
+    %>
+
+    <div class="summary">
+      <div class="summary-card">
+        <div class="value"><%= total %></div>
+        <div class="label">Total de Registros</div>
+      </div>
+      <div class="summary-card present">
+        <div class="value"><%= presentes %></div>
+        <div class="label">Presenças</div>
+      </div>
+      <div class="summary-card absent">
+        <div class="value"><%= ausentes %></div>
+        <div class="label">Ausências</div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <% if (registros.length === 0) { %>
+        <div class="empty-msg">
+          Nenhuma frequência registrada ainda.<br />
+          <a href="/">Realize a chamada diária para começar.</a>
+        </div>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Data</th>
+              <th>Nome da Criança</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% registros.forEach(function(registro, index) { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td>
+                  <%
+                    // Formata a data de AAAA-MM-DD para DD/MM/AAAA
+                    const partes = registro.data.split('-');
+                    const dataFormatada = partes.length === 3
+                      ? partes[2] + '/' + partes[1] + '/' + partes[0]
+                      : registro.data;
+                  %>
+                  <%= dataFormatada %>
+                </td>
+                <td><%= registro.nome %></td>
+                <td>
+                  <span class="badge <%= registro.status === 'Presente' ? 'presente' : 'ausente' %>">
+                    <%= registro.status === 'Presente' ? '✔ Presente' : '✘ Ausente' %>
+                  </span>
+                </td>
+                <td>
+                  <a
+                    href="/excluir/<%= registro.id %>"
+                    class="btn-delete"
+                    onclick="return confirm('Deseja realmente excluir este registro de <%= registro.nome %> em <%= dataFormatada %>?')"
+                  >
+                    ❌ Excluir
+                  </a>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+
+  </div>
+</body>
+</html>

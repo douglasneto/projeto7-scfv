@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastrar Nova Criança - SCFV</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+      overflow: hidden;
+    }
+
+    /* ── Cabeçalho ── */
+    .header {
+      background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
+      color: #fff;
+      padding: 24px 32px;
+    }
+    .header h1 { font-size: 1.35rem; font-weight: 700; }
+    .header p  { font-size: 0.88rem; margin-top: 4px; opacity: 0.85; }
+
+    /* ── Formulário ── */
+    .form-body {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .field label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .field input {
+      border: 1.5px solid #BDBDBD;
+      border-radius: 7px;
+      padding: 11px 14px;
+      font-size: 0.97rem;
+      color: #333;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field input:focus {
+      border-color: #1565C0;
+      box-shadow: 0 0 0 3px rgba(21,101,192,0.12);
+    }
+    .field input::placeholder { color: #BDBDBD; }
+
+    .required-mark { color: #C62828; margin-left: 2px; }
+
+    /* ── Ações ── */
+    .actions {
+      display: flex;
+      gap: 12px;
+      padding: 0 32px 32px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      flex: 1;
+      background: #1565C0;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 7px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      text-align: center;
+    }
+    .btn-primary:hover { background: #0D47A1; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      flex: 1;
+      background: transparent;
+      color: #1565C0;
+      border: 1.5px solid #1565C0;
+      padding: 12px 20px;
+      border-radius: 7px;
+      font-size: 0.97rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-secondary:hover { background: #E3F2FD; }
+
+    .hint {
+      padding: 0 32px 24px;
+      font-size: 0.82rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <h1>➕ Cadastrar Nova Criança</h1>
+      <p>Preencha os dados da criança para adicioná-la ao sistema de chamada.</p>
+    </div>
+
+    <form action="/cadastrar" method="POST">
+      <div class="form-body">
+
+        <div class="field">
+          <label for="nome">Nome da Criança <span class="required-mark">*</span></label>
+          <input
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Ex: Maria Aparecida Santos"
+            required
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="field">
+          <label for="responsavel">Nome do Responsável</label>
+          <input
+            type="text"
+            id="responsavel"
+            name="responsavel"
+            placeholder="Ex: Ana Santos"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="field">
+          <label for="telefone">Telefone de Contato</label>
+          <input
+            type="tel"
+            id="telefone"
+            name="telefone"
+            placeholder="Ex: (15) 99999-0000"
+            autocomplete="off"
+          />
+        </div>
+
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-primary">✔ Salvar Cadastro</button>
+        <a href="/" class="btn-secondary">← Voltar para Chamada</a>
+      </div>
+    </form>
+
+    <p class="hint">* Campo obrigatório. Os demais campos são opcionais.</p>
+
+  </div>
+</body>
+</html>

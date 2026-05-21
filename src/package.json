@@ -1,0 +1,14 @@
+{
+  "name": "scfv-controle-presenca",
+  "version": "1.0.0",
+  "description": "Sistema de Controle de Presença Diária para o SCFV de Taquarituba - UNIVESP",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
+  }
+}
